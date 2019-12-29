@@ -1,4 +1,4 @@
-r"""
+ur"""
 .. _sec-costl2:
 
 Least squared deviation
@@ -61,6 +61,7 @@ Code explanation
     :special-members: __init__
 
 """
+from __future__ import absolute_import
 from ruptures.costs import NotEnoughPoints
 
 from ruptures.base import BaseCost
@@ -68,18 +69,18 @@ from ruptures.base import BaseCost
 
 class CostL2(BaseCost):
 
-    r"""
+    ur"""
     Least squared deviation.
     """
 
-    model = "l2"
+    model = u"l2"
 
     def __init__(self):
         self.signal = None
         self.min_size = 2
 
     def fit(self, signal):
-        """Set parameters of the instance.
+        u"""Set parameters of the instance.
 
         Args:
             signal (array): signal. Shape (n_samples,) or (n_samples, n_features)
@@ -95,7 +96,7 @@ class CostL2(BaseCost):
         return self
 
     def error(self, start, end):
-        """Return the approximation cost on the segment [start:end].
+        u"""Return the approximation cost on the segment [start:end].
 
         Args:
             start (int): start of the segment

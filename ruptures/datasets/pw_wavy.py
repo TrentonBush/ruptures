@@ -1,4 +1,4 @@
-"""
+u"""
 .. _sec-pw-wavy:
 
 Shift in frequency (sine waves)
@@ -41,16 +41,18 @@ Code explanation
 
 """
 
+from __future__ import absolute_import
 from itertools import cycle
 
 import numpy as np
 from numpy.random import normal
 
 from ruptures.utils import draw_bkps
+from itertools import izip
 
 
 def pw_wavy(n_samples=200, n_bkps=3, noise_std=None):
-    """Return a 1D piecewise wavy signal and the associated changepoints.
+    u"""Return a 1D piecewise wavy signal and the associated changepoints.
 
     Args:
         n_samples (int, optional): signal length
@@ -67,7 +69,7 @@ def pw_wavy(n_samples=200, n_bkps=3, noise_std=None):
     f1 = np.array([0.075, 0.1])
     f2 = np.array([0.1, 0.125])
     freqs = np.zeros((n_samples, 2))
-    for sub, val in zip(np.split(freqs, bkps[:-1]), cycle([f1, f2])):
+    for sub, val in izip(np.split(freqs, bkps[:-1]), cycle([f1, f2])):
         sub += val
     tt = np.arange(n_samples)
 

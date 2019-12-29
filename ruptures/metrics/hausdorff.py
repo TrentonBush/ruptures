@@ -1,4 +1,4 @@
-r"""
+ur"""
 .. _sec-hausdorff:
 
 Hausdorff metric
@@ -38,13 +38,14 @@ Code explanation
 .. autofunction:: ruptures.metrics.hausdorff.hausdorff
 
 """
+from __future__ import absolute_import
 import numpy as np
 from scipy.spatial.distance import cdist
 from ruptures.metrics.sanity_check import sanity_check
 
 
 def hausdorff(bkps1, bkps2):
-    """Compute the Hausdorff distance between changepoints.
+    u"""Compute the Hausdorff distance between changepoints.
 
     Args:
         bkps1 (list): list of the last index of each regime.

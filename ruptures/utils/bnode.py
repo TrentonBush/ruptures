@@ -1,9 +1,9 @@
-"""Binary node."""
+u"""Binary node."""
 
 
-class Bnode:
+class Bnode(object):
 
-    """Binary node.
+    u"""Binary node.
 
     In binary segmentation, each segment [start, end) is a binary node.
 
@@ -19,7 +19,7 @@ class Bnode:
 
     @property
     def gain(self):
-        """Return the cost decrease when splitting this node."""
+        u"""Return the cost decrease when splitting this node."""
         if self.left is None or self.right is None:
             return 0
         elif abs(self.val) < 1e-8:

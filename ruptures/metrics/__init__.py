@@ -1,4 +1,4 @@
-r"""
+ur"""
 ====================================================================================================
 Evaluation
 ====================================================================================================
@@ -16,6 +16,7 @@ Evaluation
     display
 
 """
+from __future__ import absolute_import
 from .hausdorff import hausdorff
 from .timeerror import meantime
 from .precisionrecall import precision_recall

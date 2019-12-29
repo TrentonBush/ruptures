@@ -1,4 +1,4 @@
-r"""
+ur"""
 .. _sec-window:
 
 Window-based change point detection
@@ -108,20 +108,22 @@ Code explanation
 """
 
 
+from __future__ import absolute_import
 import numpy as np
 from scipy.signal import argrelmax
 
 from ruptures.base import BaseCost, BaseEstimator
 from ruptures.costs import cost_factory
 from ruptures.utils import unzip
+from itertools import izip
 
 
 class Window(BaseEstimator):
 
-    """Window sliding method."""
+    u"""Window sliding method."""
 
-    def __init__(self, width=100, model="l2", custom_cost=None, min_size=2, jump=5, params=None):
-        """Instanciate with window length.
+    def __init__(self, width=100, model=u"l2", custom_cost=None, min_size=2, jump=5, params=None):
+        u"""Instanciate with window length.
 
         Args:
             width (int, optional): window length. Defaults to 100 samples.
@@ -151,7 +153,7 @@ class Window(BaseEstimator):
         self.score = list()
 
     def _seg(self, n_bkps=None, pen=None, epsilon=None):
-        """Sequential peak search.
+        u"""Sequential peak search.
 
         The stopping rule depends on the parameter passed to the function.
 
@@ -172,14 +174,14 @@ class Window(BaseEstimator):
         peak_inds_shifted, = argrelmax(self.score,
                                        order=max(self.width, self.min_size) // (
                                            2 * self.jump),
-                                       mode="wrap")
+                                       mode=u"wrap")
 
         if peak_inds_shifted.size == 0:  # no peaks if the score is constant
             return bkps
         gains = np.take(self.score, peak_inds_shifted)
         peak_inds_arr = np.take(self.inds, peak_inds_shifted)
         # sort according to score value
-        _, peak_inds = unzip(sorted(zip(gains, peak_inds_arr)))
+        _, peak_inds = unzip(sorted(izip(gains, peak_inds_arr)))
         peak_inds = list(peak_inds)
 
         while not stop:
@@ -212,7 +214,7 @@ class Window(BaseEstimator):
         return bkps
 
     def fit(self, signal):
-        """Compute params to segment signal.
+        u"""Compute params to segment signal.
 
         Args:
             signal (array): signal to segment. Shape (n_samples, n_features) or (n_samples,).
@@ -245,7 +247,7 @@ class Window(BaseEstimator):
         return self
 
     def predict(self, n_bkps=None, pen=None, epsilon=None):
-        """Return the optimal breakpoints.
+        u"""Return the optimal breakpoints.
 
         Must be called after the fit method. The breakpoints are associated with the signal passed
         to fit().
@@ -259,13 +261,13 @@ class Window(BaseEstimator):
         Returns:
             list: sorted list of breakpoints
         """
-        msg = "Give a parameter."
+        msg = u"Give a parameter."
         assert any(param is not None for param in (n_bkps, pen, epsilon)), msg
 
         bkps = self._seg(n_bkps=n_bkps, pen=pen, epsilon=epsilon)
         return bkps
 
     def fit_predict(self, signal, n_bkps=None, pen=None, epsilon=None):
-        """Helper method to call fit and predict once."""
+        u"""Helper method to call fit and predict once."""
         self.fit(signal)
         return self.predict(n_bkps=n_bkps, pen=pen, epsilon=epsilon)

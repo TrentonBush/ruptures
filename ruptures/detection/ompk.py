@@ -1,10 +1,11 @@
-"""
+u"""
 
 Kernel orthogonal matching pursuit for changepoint detection.
 
 Fast but approximate.
 
 """
+from __future__ import absolute_import
 from itertools import product
 
 import numpy as np
@@ -12,12 +13,12 @@ import numpy as np
 from ruptures.utils import pairwise
 
 
-class OmpK:
+class OmpK(object):
 
-    """Contient l'algorithme de parcours des partitions."""
+    u"""Contient l'algorithme de parcours des partitions."""
 
     def __init__(self, min_size=2, jump=5):
-        """One line description
+        u"""One line description
 
         Detailled description
 
@@ -34,7 +35,7 @@ class OmpK:
         self.gram = None
 
     def _seg(self, n_bkps=None, pen=None, epsilon=None):
-        """Computes the binary segmentation.
+        u"""Computes the binary segmentation.
 
         The stopping rule depends on the parameter passed to the function.
 
@@ -104,7 +105,7 @@ class OmpK:
         return bkps
 
     def fit(self, gram):
-        """Compute params to segment signal.
+        u"""Compute params to segment signal.
 
         Args:
             gram (array): Gram matrix of signal to segment. Shape (n_samples, n_samples).
@@ -112,7 +113,7 @@ class OmpK:
         Returns:
             self
         """
-        assert gram.shape[0] == gram.shape[1], "Not a square matrix."
+        assert gram.shape[0] == gram.shape[1], u"Not a square matrix."
         # update some params
         self.gram = gram
         self.n_samples, _ = self.gram.shape
@@ -120,7 +121,7 @@ class OmpK:
         return self
 
     def predict(self, n_bkps=None, pen=None, epsilon=None):
-        """Return the optimal breakpoints.
+        u"""Return the optimal breakpoints.
 
         Must be called after the fit method. The breakpoints are associated with the signal passed
         to fit().
@@ -134,13 +135,13 @@ class OmpK:
         Returns:
             list: sorted list of breakpoints
         """
-        msg = "Give a parameter."
+        msg = u"Give a parameter."
         assert any(param is not None for param in (n_bkps, pen, epsilon)), msg
 
         bkps = self._seg(n_bkps=n_bkps, pen=pen, epsilon=epsilon)
         return bkps
 
     def fit_predict(self, gram, n_bkps=None, pen=None, epsilon=None):
-        """Helper method to call fit and predict once."""
+        u"""Helper method to call fit and predict once."""
         self.fit(gram)
         return self.predict(n_bkps=n_bkps, pen=pen, epsilon=epsilon)

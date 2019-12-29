@@ -1,4 +1,4 @@
-r"""
+ur"""
 .. _sec-bottup:
 
 Bottom-up segmentation
@@ -94,7 +94,12 @@ Code explanation
     :keyprefix: bu-
 
 """
-from functools import lru_cache
+from __future__ import absolute_import
+# 3 to 2 compatibility
+try:
+    from functools import lru_cache
+except ImportError:
+    from backports.functools_lru_cache import lru_cache
 
 from ruptures.base import BaseCost, BaseEstimator
 from ruptures.costs import cost_factory
@@ -104,10 +109,10 @@ from ruptures.utils import Bnode, pairwise
 
 class BottomUp(BaseEstimator):
 
-    """Bottom-up segmentation."""
+    u"""Bottom-up segmentation."""
 
-    def __init__(self, model="l2", custom_cost=None, min_size=2, jump=5, params=None):
-        """Initialize a BottomUp instance.
+    def __init__(self, model=u"l2", custom_cost=None, min_size=2, jump=5, params=None):
+        u"""Initialize a BottomUp instance.
 
 
         Args:
@@ -135,7 +140,7 @@ class BottomUp(BaseEstimator):
         self.merge = lru_cache(maxsize=None)(self._merge)
 
     def _grow_tree(self):
-        """Grow the entire binary tree."""
+        u"""Grow the entire binary tree."""
         partition = [(0, self.n_samples)]
         stop = False
         while not stop:  # recursively divide the signal
@@ -143,7 +148,7 @@ class BottomUp(BaseEstimator):
             start, end = max(partition, key=lambda t: t[1] - t[0])
             mid = (start + end) * 0.5
             bkps = list()
-            for bkp in range(start, end):
+            for bkp in xrange(start, end):
                 if bkp % self.jump == 0:
                     if bkp - start >= self.min_size and end - bkp >= self.min_size:
                         bkps.append(bkp)
@@ -164,15 +169,15 @@ class BottomUp(BaseEstimator):
         return leaves
 
     def _merge(self, left, right):
-        """Merge two contiguous segments."""
-        assert left.end == right.start, "Segments are not contiguous."
+        u"""Merge two contiguous segments."""
+        assert left.end == right.start, u"Segments are not contiguous."
         start, end = left.start, right.end
         val = self.cost.error(start, end)
         node = Bnode(start, end, val, left=left, right=right)
         return node
 
     def _seg(self, n_bkps=None, pen=None, epsilon=None):
-        """Compute the bottom-up segmentation.
+        u"""Compute the bottom-up segmentation.
 
         The stopping rule depends on the parameter passed to the function.
 
@@ -213,11 +218,11 @@ class BottomUp(BaseEstimator):
                 leaves.remove(leaf.right)
                 leaves += [leaf]
 
-        partition = {(leaf.start, leaf.end): leaf.val for leaf in leaves}
+        partition = dict(((leaf.start, leaf.end), leaf.val) for leaf in leaves)
         return partition
 
     def fit(self, signal):
-        """Compute params to segment signal.
+        u"""Compute params to segment signal.
 
         Args:
             signal (array): signal to segment. Shape (n_samples, n_features) or (n_samples,).
@@ -237,7 +242,7 @@ class BottomUp(BaseEstimator):
         return self
 
     def predict(self, n_bkps=None, pen=None, epsilon=None):
-        """Return the optimal breakpoints.
+        u"""Return the optimal breakpoints.
 
         Must be called after the fit method. The breakpoints are associated with the signal passed
         to fit().
@@ -251,7 +256,7 @@ class BottomUp(BaseEstimator):
         Returns:
             list: sorted list of breakpoints
         """
-        msg = "Give a parameter."
+        msg = u"Give a parameter."
         assert any(param is not None for param in (n_bkps, pen, epsilon)), msg
 
         partition = self._seg(n_bkps=n_bkps, pen=pen, epsilon=epsilon)
@@ -259,7 +264,7 @@ class BottomUp(BaseEstimator):
         return bkps
 
     def fit_predict(self, signal, n_bkps=None, pen=None, epsilon=None):
-        """Fit to the signal and return the optimal breakpoints.
+        u"""Fit to the signal and return the optimal breakpoints.
 
         Helper method to call fit and predict once
 

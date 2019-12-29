@@ -1,4 +1,4 @@
-r"""
+ur"""
 
 .. _sec-display:
 
@@ -45,21 +45,34 @@ Code explanation
 
 """
 
+from __future__ import absolute_import
 from itertools import cycle
 
 import numpy as np
 
 from ruptures.utils import pairwise
+from itertools import izip
 
-COLOR_CYCLE = ["#4286f4", "#f44174"]
+COLOR_CYCLE = [u"#4286f4", u"#f44174"]
 
 
 class MatplotlibMissingError(RuntimeError):
     pass
+try:
+    import matplotlib
+    import os
+    # must be before importing matplotlib.pyplot or pylab!
+    if os.name == 'posix' and ("DISPLAY" not in os.environ or os.environ['DISPLAY'] == ':0.0'):
+        matplotlib.use('Agg')
 
+    # now import other things from matplotlib
+    import matplotlib.pyplot as plt
+except ImportError:
+    raise MatplotlibMissingError(
+        u'This feature requires the optional dependency matpotlib, you can install it using `pip install matplotlib`.')
 
 def display(signal, true_chg_pts, computed_chg_pts=None, **kwargs):
-    """
+    u"""
     Display a signal and the change points provided in alternating colors. If another set of change
     point is provided, they are displayed with dashed vertical dashed lines.
     The following matplotlib subplots options is set by default, but can be changed when calling `display`):
@@ -75,11 +88,6 @@ def display(signal, true_chg_pts, computed_chg_pts=None, **kwargs):
         tuple: (figure, axarr) with a :class:`matplotlib.figure.Figure` object and an array of Axes objects.
 
     """
-    try:
-        import matplotlib.pyplot as plt
-    except ImportError:
-        raise MatplotlibMissingError(
-            'This feature requires the optional dependency matpotlib, you can install it using `pip install matplotlib`.')
 
     if type(signal) != np.ndarray:
         # Try to get array from Pandas dataframe
@@ -91,33 +99,34 @@ def display(signal, true_chg_pts, computed_chg_pts=None, **kwargs):
 
     # let's set a sensible defaut size for the subplots
     matplotlib_options = {
-        "figsize": (10, 2 * n_features),  # figure size
+        u"figsize": (10, 2 * n_features),  # figure size
     }
     # add/update the options given by the user
-    matplotlib_options.update(kwargs)
+    # REMOVED - couldn't figure out how to make compatible with matplotlib 2.2
+    # matplotlib_options.update(kwargs)
 
     # create plots
     fig, axarr = plt.subplots(n_features, sharex=True, **matplotlib_options)
     if n_features == 1:
         axarr = [axarr]
 
-    for axe, sig in zip(axarr, signal.T):
+    for axe, sig in izip(axarr, signal.T):
         color_cycle = cycle(COLOR_CYCLE)
         # plot s
-        axe.plot(range(n_samples), sig)
+        axe.plot(xrange(n_samples), sig)
 
         # color each (true) regime
         bkps = [0] + sorted(true_chg_pts)
         alpha = 0.2  # transparency of the colored background
 
-        for (start, end), col in zip(pairwise(bkps), color_cycle):
+        for (start, end), col in izip(pairwise(bkps), color_cycle):
             axe.axvspan(max(0, start - 0.5),
                         end - 0.5,
                         facecolor=col, alpha=alpha)
 
-        color = "k"  # color of the lines indicating the computed_chg_pts
+        color = u"k"  # color of the lines indicating the computed_chg_pts
         linewidth = 3  # linewidth of the lines indicating the computed_chg_pts
-        linestyle = "--"  # linestyle of the lines indicating the computed_chg_pts
+        linestyle = u"--"  # linestyle of the lines indicating the computed_chg_pts
         # vertical lines to mark the computed_chg_pts
         if computed_chg_pts is not None:
             for bkp in computed_chg_pts:

@@ -1,4 +1,4 @@
-r"""
+ur"""
 Exact segmentation: dynamic programming
 ====================================================================================================
 
@@ -53,7 +53,12 @@ Code explanation
     :special-members: __init__
 
 """
-from functools import lru_cache
+from __future__ import absolute_import
+# 3 to 2 compatibility
+try:
+    from functools import lru_cache
+except ImportError:
+    from backports.functools_lru_cache import lru_cache
 
 from ruptures.utils import sanity_check
 from ruptures.costs import cost_factory
@@ -62,14 +67,14 @@ from ruptures.base import BaseCost, BaseEstimator
 
 class Dynp(BaseEstimator):
 
-    """ Find optimal change points using dynamic programming.
+    u""" Find optimal change points using dynamic programming.
 
     Given a segment model, it computes the best partition for which the sum of errors is minimum.
 
     """
 
-    def __init__(self, model="l2", custom_cost=None, min_size=2, jump=5, params=None):
-        """Creates a Dynp instance.
+    def __init__(self, model=u"l2", custom_cost=None, min_size=2, jump=5, params=None):
+        u"""Creates a Dynp instance.
 
         Args:
             model (str, optional): segment model, ["l1", "l2", "rbf"]. Not used if ``'custom_cost'`` is not None.
@@ -94,12 +99,12 @@ class Dynp(BaseEstimator):
         self.n_samples = None
 
     def _seg(self, start, end, n_bkps):
-        """Recurrence to find the optimal partition of signal[start:end].
+        u"""Recurrence to find the optimal partition of signal[start:end].
 
         This method is to be memoized and then used.
 
         Args:
-            start (int): start of the segment (inclusive)
+            start (int): start of the segment (inclusive)
             end (int): end of the segment (exclusive)
             n_bkps (int): number of breakpoints
 
@@ -113,7 +118,7 @@ class Dynp(BaseEstimator):
             return {(start, end): cost}
         elif n_bkps > 0:
             # Let's fill the list of admissible last breakpoints
-            multiple_of_jump = (k for k in range(start, end) if k % jump == 0)
+            multiple_of_jump = (k for k in xrange(start, end) if k % jump == 0)
             admissible_bkps = list()
             for bkp in multiple_of_jump:
                 n_samples = bkp - start
@@ -124,7 +129,7 @@ class Dynp(BaseEstimator):
                         admissible_bkps.append(bkp)
 
             assert len(
-                admissible_bkps) > 0, "No admissible last breakpoints found.\
+                admissible_bkps) > 0, u"No admissible last breakpoints found.\
              start, end: ({},{}), n_bkps: {}.".format(start, end, n_bkps)
 
             # Compute the subproblems
@@ -140,7 +145,7 @@ class Dynp(BaseEstimator):
             return min(sub_problems, key=lambda d: sum(d.values()))
 
     def fit(self, signal):
-        """Create the cache associated with the signal.
+        u"""Create the cache associated with the signal.
 
         Dynamic programming is a recurrence; intermediate results are cached to speed up
         computations. This method sets up the cache.
@@ -159,7 +164,7 @@ class Dynp(BaseEstimator):
         return self
 
     def predict(self, n_bkps):
-        """Return the optimal breakpoints.
+        u"""Return the optimal breakpoints.
 
         Must be called after the fit method. The breakpoints are associated with the signal passed
         to fit().
@@ -175,7 +180,7 @@ class Dynp(BaseEstimator):
         return bkps
 
     def fit_predict(self, signal, n_bkps):
-        """Fit to the signal and return the optimal breakpoints.
+        u"""Fit to the signal and return the optimal breakpoints.
 
         Helper method to call fit and predict once
 

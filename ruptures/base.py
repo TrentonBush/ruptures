@@ -1,11 +1,13 @@
-"""Base class for change point detection estimators."""
+u"""Base class for change point detection estimators."""
+from __future__ import absolute_import
 import abc
 from ruptures.utils import pairwise
 
 
-class BaseEstimator(metaclass=abc.ABCMeta):
+class BaseEstimator(object):
 
-    """Base class for all change point detection estimators.
+    __metaclass__ = abc.ABCMeta
+    u"""Base class for all change point detection estimators.
 
     Notes
     -----
@@ -16,23 +18,24 @@ class BaseEstimator(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def fit(self, *args, **kwargs):
-        """ To call the segmentation algorithm"""
+        u""" To call the segmentation algorithm"""
         pass
 
     @abc.abstractmethod
     def predict(self, *args, **kwargs):
-        """ To call the segmentation algorithm"""
+        u""" To call the segmentation algorithm"""
         pass
 
     @abc.abstractmethod
     def fit_predict(self, *args, **kwargs):
-        """ To call the segmentation algorithm"""
+        u""" To call the segmentation algorithm"""
         pass
 
 
-class BaseCost(object, metaclass=abc.ABCMeta):
+class BaseCost(object):
 
-    """Base class for all segment cost classes.
+    __metaclass__ = abc.ABCMeta
+    u"""Base class for all segment cost classes.
 
     Notes
     -----
@@ -43,16 +46,16 @@ class BaseCost(object, metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def fit(self, *args, **kwargs):
-        """Set the parameters of the cost function, for instance the Gram matrix, etc."""
+        u"""Set the parameters of the cost function, for instance the Gram matrix, etc."""
         pass
 
     @abc.abstractmethod
     def error(self, start, end):
-        """Returns the cost on segment [start:end]."""
+        u"""Returns the cost on segment [start:end]."""
         pass
 
     def sum_of_costs(self, bkps):
-        """Returns the sum of segments cost for the given segmentation.
+        u"""Returns the sum of segments cost for the given segmentation.
 
         Args:
             bkps (list): list of change points. By convention, bkps[-1]==n_samples.

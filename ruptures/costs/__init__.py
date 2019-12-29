@@ -1,4 +1,4 @@
-r"""
+ur"""
 .. _sec-costs:
 
 ====================================================================================================
@@ -20,6 +20,7 @@ Cost functions
 
 """
 
+from __future__ import absolute_import
 from ruptures.exceptions import NotEnoughPoints
 from .factory import cost_factory
 from .costl1 import CostL1

@@ -1,4 +1,4 @@
-r"""
+ur"""
 .. _sec-metric:
 
 Mahalanobis-type metric
@@ -76,6 +76,8 @@ Code explanation
 
 
 """
+from __future__ import division
+from __future__ import absolute_import
 import numpy as np
 from numpy.linalg import inv
 
@@ -85,14 +87,14 @@ from ruptures.exceptions import NotEnoughPoints
 
 class CostMl(BaseCost):
 
-    r"""
+    ur"""
     Mahalanobis-type cost function.
     """
 
-    model = "mahalanobis"
+    model = u"mahalanobis"
 
     def __init__(self, metric=None):
-        """Create a new instance.
+        u"""Create a new instance.
 
         Args:
             metric (ndarray, optional): PSD matrix that defines a Mahalanobis-type pseudo distance. If None, defaults to the Mahalanobis matrix. Shape (n_features, n_features).
@@ -105,7 +107,7 @@ class CostMl(BaseCost):
         self.min_size = 2
 
     def fit(self, signal):
-        """Sets parameters of the instance.
+        u"""Sets parameters of the instance.
 
         Args:
             signal (array): signal. Shape (n_samples,) or (n_samples, n_features)
@@ -126,7 +128,7 @@ class CostMl(BaseCost):
         return self
 
     def error(self, start, end):
-        """Return the approximation cost on the segment [start:end].
+        u"""Return the approximation cost on the segment [start:end].
 
         Args:
             start (int): start of the segment

@@ -1,4 +1,4 @@
-r"""
+ur"""
 .. _sec-binseg:
 
 Binary segmentation
@@ -90,18 +90,23 @@ Code explanation
     :keyprefix: bs-
 
 """
-from functools import lru_cache
+from __future__ import absolute_import
 from ruptures.base import BaseCost, BaseEstimator
 from ruptures.costs import cost_factory
 from ruptures.utils import pairwise
+# 3 to 2 compatibility
+try:
+    from functools import lru_cache
+except ImportError:
+    from backports.functools_lru_cache import lru_cache
 
 
 class Binseg(BaseEstimator):
 
-    """Binary segmentation."""
+    u"""Binary segmentation."""
 
-    def __init__(self, model="l2", custom_cost=None, min_size=2, jump=5, params=None):
-        """Initialize a Binseg instance.
+    def __init__(self, model=u"l2", custom_cost=None, min_size=2, jump=5, params=None):
+        u"""Initialize a Binseg instance.
 
         Args:
             model (str, optional): segment model, ["l1", "l2", "rbf",...]. Not used if ``'custom_cost'`` is not None.
@@ -130,7 +135,7 @@ class Binseg(BaseEstimator):
         self.single_bkp = lru_cache(maxsize=None)(self._single_bkp)
 
     def _seg(self, n_bkps=None, pen=None, epsilon=None):
-        """Computes the binary segmentation.
+        u"""Computes the binary segmentation.
 
         The stopping rule depends on the parameter passed to the function.
 
@@ -169,15 +174,15 @@ class Binseg(BaseEstimator):
             if not stop:
                 bkps.append(bkp)
                 bkps.sort()
-        partition = {(start, end): self.cost.error(start, end)
-                     for start, end in pairwise([0] + bkps)}
+        partition = dict(((start, end), self.cost.error(start, end))
+                     for start, end in pairwise([0] + bkps))
         return partition
 
     def _single_bkp(self, start, end):
-        """Return the optimal breakpoint of [start:end] (if it exists)."""
+        u"""Return the optimal breakpoint of [start:end] (if it exists)."""
         segment_cost = self.cost.error(start, end)
         gain_list = list()
-        for bkp in range(start, end, self.jump):
+        for bkp in xrange(start, end, self.jump):
             if bkp - start > self.min_size and end - bkp > self.min_size:
                 gain = segment_cost - \
                     self.cost.error(start, bkp) - self.cost.error(bkp, end)
@@ -189,7 +194,7 @@ class Binseg(BaseEstimator):
         return bkp, gain
 
     def fit(self, signal):
-        """Compute params to segment signal.
+        u"""Compute params to segment signal.
 
         Args:
             signal (array): signal to segment. Shape (n_samples, n_features) or (n_samples,).
@@ -209,7 +214,7 @@ class Binseg(BaseEstimator):
         return self
 
     def predict(self, n_bkps=None, pen=None, epsilon=None):
-        """Return the optimal breakpoints.
+        u"""Return the optimal breakpoints.
 
         Must be called after the fit method. The breakpoints are associated with the signal passed
         to fit().
@@ -223,7 +228,7 @@ class Binseg(BaseEstimator):
         Returns:
             list: sorted list of breakpoints
         """
-        msg = "Give a parameter."
+        msg = u"Give a parameter."
         assert any(param is not None for param in (n_bkps, pen, epsilon)), msg
 
         partition = self._seg(n_bkps=n_bkps, pen=pen, epsilon=epsilon)
@@ -231,7 +236,7 @@ class Binseg(BaseEstimator):
         return bkps
 
     def fit_predict(self, signal, n_bkps=None, pen=None, epsilon=None):
-        """Fit to the signal and return the optimal breakpoints.
+        u"""Fit to the signal and return the optimal breakpoints.
 
         Helper method to call fit and predict once
 

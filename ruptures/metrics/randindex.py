@@ -1,4 +1,4 @@
-r"""
+ur"""
 .. _sec-randindex:
 
 Rand index
@@ -11,7 +11,7 @@ The Rand index measures the similarity between two segmentations.
 Formally, for a signal :math:`\{y_t\}_t` and a segmentation :math:`\mathcal{S}`, denote by :math:`A` the associated membership matrix:
 
     .. math::
-        \mathcal{A}_{ij} &= 1 \text{ if both samples } y_i \text{ and } y_j \text{ are in the same segment according to } \mathcal{S} \\
+        \mathcal{A}_{ij} &= 1 \text{ if both samples } y_i \text{ and } y_j \text{ are in the same segment according to } \mathcal{S} \\
         &= 0 \quad\text{otherwise}
 
 Let :math:`\hat{\mathcal{S}}` be the estimated segmentation and :math:`\hat{A}`, the associated membership matrix.
@@ -48,11 +48,12 @@ Code explanation
 .. autofunction:: ruptures.metrics.randindex.randindex
 
 """
+from __future__ import absolute_import
 from ruptures.metrics import hamming
 
 
 def randindex(bkps1, bkps2):
-    """Rand index for two partitions. The result is scaled to be within 0 and 1.
+    u"""Rand index for two partitions. The result is scaled to be within 0 and 1.
 
     Args:
         bkps1 (list): list of the last index of each regime.

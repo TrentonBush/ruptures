@@ -1,4 +1,4 @@
-"""
+u"""
 ====================================================================================================
 Synthetic signals
 ====================================================================================================
@@ -16,6 +16,7 @@ Synthetic signals
 
 """
 
+from __future__ import absolute_import
 from .pw_constant import pw_constant
 from .pw_normal import pw_normal
 from .pw_linear import pw_linear

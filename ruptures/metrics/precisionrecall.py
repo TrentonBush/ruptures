@@ -1,4 +1,4 @@
-r"""
+ur"""
 .. _sec-precision:
 
 Precision and recall
@@ -54,6 +54,8 @@ Code explanation
 .. autofunction:: ruptures.metrics.precisionrecall.precision_recall
 
 """
+from __future__ import division
+from __future__ import absolute_import
 from itertools import groupby, product
 
 import numpy as np
@@ -63,7 +65,7 @@ from ruptures.utils import unzip
 
 
 def precision_recall(true_bkps, my_bkps, margin=10):
-    """Calculate the precision/recall of an estimated segmentation compared with the true segmentation.
+    u"""Calculate the precision/recall of an estimated segmentation compared with the true segmentation.
 
     Args:
         true_bkps (list): list of the last index of each regime (true
@@ -76,7 +78,7 @@ def precision_recall(true_bkps, my_bkps, margin=10):
         tuple: (precision, recall)
     """
     sanity_check(true_bkps, my_bkps)
-    assert margin > 0, "Margin of error must be positive (margin = {})".format(
+    assert margin > 0, u"Margin of error must be positive (margin = {})".format(
         margin)
 
     if len(my_bkps) == 1:

@@ -1,4 +1,4 @@
-r"""
+ur"""
 .. _sec-pw-linear:
 
 Shift in linear model
@@ -35,6 +35,7 @@ Code explanation
 
 
 """
+from __future__ import absolute_import
 import numpy as np
 from numpy.random import normal
 
@@ -43,7 +44,7 @@ from ruptures.utils import draw_bkps
 
 
 def pw_linear(n_samples=200, n_features=1, n_bkps=3, noise_std=None):
-    """
+    u"""
     Return piecewise linear signal and the associated changepoints.
 
     Args:

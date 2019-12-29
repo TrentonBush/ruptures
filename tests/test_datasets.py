@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from itertools import product
 
 import numpy as np
@@ -6,15 +7,15 @@ import pytest
 from ruptures.datasets import pw_constant, pw_linear, pw_normal, pw_wavy
 
 
-@pytest.mark.parametrize("func", [pw_constant, pw_linear, pw_normal, pw_wavy])
+@pytest.mark.parametrize(u"func", [pw_constant, pw_linear, pw_normal, pw_wavy])
 def test_empty_arg(func):
     func()
 
 
-@pytest.mark.parametrize('func, n_samples, n_features, n_bkps, noise_std',
+@pytest.mark.parametrize(u'func, n_samples, n_features, n_bkps, noise_std',
                          product([pw_constant],
-                                 range(20, 1000, 200),
-                                 range(1, 4),
+                                 xrange(20, 1000, 200),
+                                 xrange(1, 4),
                                  [2, 5, 3],
                                  [None, 1, 2]))
 def test_constant(func, n_samples, n_features, n_bkps, noise_std):
@@ -25,10 +26,10 @@ def test_constant(func, n_samples, n_features, n_bkps, noise_std):
     assert bkps[-1] == n_samples
 
 
-@pytest.mark.parametrize('func, n_samples, n_features, n_bkps, noise_std',
+@pytest.mark.parametrize(u'func, n_samples, n_features, n_bkps, noise_std',
                          product([pw_linear],
-                                 range(20, 1000, 200),
-                                 range(1, 4),
+                                 xrange(20, 1000, 200),
+                                 xrange(1, 4),
                                  [2, 5, 3],
                                  [None, 1, 2]))
 def test_linear(func, n_samples, n_features, n_bkps, noise_std):
@@ -39,9 +40,9 @@ def test_linear(func, n_samples, n_features, n_bkps, noise_std):
     assert bkps[-1] == n_samples
 
 
-@pytest.mark.parametrize('func, n_samples, n_bkps, noise_std',
+@pytest.mark.parametrize(u'func, n_samples, n_bkps, noise_std',
                          product([pw_wavy],
-                                 range(20, 1000, 200),
+                                 xrange(20, 1000, 200),
                                  [2, 5, 3],
                                  [None, 1, 2]))
 def test_wavy(func, n_samples, n_bkps, noise_std):
@@ -52,9 +53,9 @@ def test_wavy(func, n_samples, n_bkps, noise_std):
     assert bkps[-1] == n_samples
 
 
-@pytest.mark.parametrize('func, n_samples, n_bkps',
+@pytest.mark.parametrize(u'func, n_samples, n_bkps',
                          product([pw_normal],
-                                 range(20, 1000, 200),
+                                 xrange(20, 1000, 200),
                                  [2, 5, 3]))
 def test_normal(func, n_samples, n_bkps):
     signal, bkps = func(

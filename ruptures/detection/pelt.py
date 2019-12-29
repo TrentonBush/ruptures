@@ -1,4 +1,4 @@
-r"""
+ur"""
 Exact segmentation: Pelt
 ====================================================================================================
 
@@ -57,23 +57,26 @@ Code explanation
     :labelprefix: B
     :keyprefix: b-
 """
+from __future__ import division
+from __future__ import absolute_import
 from math import floor
 
 from ruptures.costs import cost_factory
 from ruptures.base import BaseCost, BaseEstimator
+from itertools import izip
 
 
 class Pelt(BaseEstimator):
 
-    """Penalized change point detection.
+    u"""Penalized change point detection.
 
     For a given model and penalty level, computes the segmentation which minimizes the constrained
     sum of approximation errors.
 
     """
 
-    def __init__(self, model="l2", custom_cost=None, min_size=2, jump=5, params=None):
-        """Initialize a Pelt instance.
+    def __init__(self, model=u"l2", custom_cost=None, min_size=2, jump=5, params=None):
+        u"""Initialize a Pelt instance.
 
         Args:
             model (str, optional): segment model, ["l1", "l2", "rbf"]. Not used if ``'custom_cost'`` is not None.
@@ -97,7 +100,7 @@ class Pelt(BaseEstimator):
         self.n_samples = None
 
     def _seg(self, pen):
-        """Computes the segmentation for a given penalty using PELT (or a list
+        u"""Computes the segmentation for a given penalty using PELT (or a list
         of penalties).
 
         Args:
@@ -115,11 +118,11 @@ class Pelt(BaseEstimator):
 
         # Recursion
         ind = [
-            k for k in range(0, self.n_samples, self.jump) if k >= self.min_size]
+            k for k in xrange(0, self.n_samples, self.jump) if k >= self.min_size]
         ind += [self.n_samples]
         for bkp in ind:
             # adding a point to the admissible set from the previous loop.
-            new_adm_pt = floor((bkp - self.min_size) / self.jump)
+            new_adm_pt = int(floor((bkp - self.min_size) / self.jump))
             new_adm_pt *= self.jump
             admissible.append(new_adm_pt)
 
@@ -139,7 +142,7 @@ class Pelt(BaseEstimator):
                 subproblems, key=lambda d: sum(d.values()))
             # trimming the admissible set
             admissible = [t for t, partition in
-                          zip(admissible, subproblems) if
+                          izip(admissible, subproblems) if
                           sum(partition.values()) <=
                           sum(partitions[bkp].values()) + pen]
 
@@ -148,7 +151,7 @@ class Pelt(BaseEstimator):
         return best_partition
 
     def fit(self, signal):
-        """Set params.
+        u"""Set params.
 
         Args:
             signal (array): signal to segment. Shape (n_samples, n_features) or (n_samples,).
@@ -166,7 +169,7 @@ class Pelt(BaseEstimator):
         return self
 
     def predict(self, pen):
-        """Return the optimal breakpoints.
+        u"""Return the optimal breakpoints.
 
         Must be called after the fit method. The breakpoints are associated with the signal passed
         to fit().
@@ -182,7 +185,7 @@ class Pelt(BaseEstimator):
         return bkps
 
     def fit_predict(self, signal, pen):
-        """Fit to the signal and return the optimal breakpoints.
+        u"""Fit to the signal and return the optimal breakpoints.
 
         Helper method to call fit and predict once
 

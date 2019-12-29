@@ -1,4 +1,4 @@
-"""
+u"""
 .. _sec-pw-normal:
 
 Shift in correlation
@@ -39,16 +39,18 @@ Code explanation
 
 """
 
+from __future__ import absolute_import
 from itertools import cycle
 
 import numpy as np
 from numpy import random as rd
 
 from ruptures.utils import draw_bkps
+from itertools import izip
 
 
 def pw_normal(n_samples=200, n_bkps=3):
-    """Return a 2D piecewise Gaussian signal and the associated changepoints.
+    u"""Return a 2D piecewise Gaussian signal and the associated changepoints.
 
     Args:
         n_samples (int, optional): signal length
@@ -64,7 +66,7 @@ def pw_normal(n_samples=200, n_bkps=3):
     signal = np.zeros((n_samples, 2), dtype=float)
     cov1 = np.array([[1, 0.9], [0.9, 1]])
     cov2 = np.array([[1, -0.9], [-0.9, 1]])
-    for sub, cov in zip(np.split(signal, bkps), cycle((cov1, cov2))):
+    for sub, cov in izip(np.split(signal, bkps), cycle((cov1, cov2))):
         n_sub, _ = sub.shape
         sub += rd.multivariate_normal([0, 0], cov, size=n_sub)
 

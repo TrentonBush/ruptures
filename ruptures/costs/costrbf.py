@@ -1,4 +1,4 @@
-r"""
+ur"""
 .. _sec-kernel:
 
 Kernelized mean change
@@ -75,6 +75,8 @@ Code explanation
 
 
 """
+from __future__ import division
+from __future__ import absolute_import
 import numpy as np
 from scipy.spatial.distance import pdist, squareform
 
@@ -84,18 +86,18 @@ from ruptures.base import BaseCost
 
 class CostRbf(BaseCost):
 
-    r"""
+    ur"""
     Kernel cost function (rbf kernel).
     """
 
-    model = "rbf"
+    model = u"rbf"
 
     def __init__(self):
         self.gram = None
         self.min_size = 2
 
     def fit(self, signal):
-        """Sets parameters of the instance.
+        u"""Sets parameters of the instance.
 
         Args:
             signal (array): signal. Shape (n_samples,) or (n_samples, n_features)
@@ -104,9 +106,9 @@ class CostRbf(BaseCost):
             self
         """
         if signal.ndim == 1:
-            K = pdist(signal.reshape(-1, 1), metric="sqeuclidean")
+            K = pdist(signal.reshape(-1, 1), metric=u"sqeuclidean")
         else:
-            K = pdist(signal, metric="sqeuclidean")
+            K = pdist(signal, metric=u"sqeuclidean")
         K_median = np.median(K) 
         if K_median != 0:
              K/= K_median
@@ -115,7 +117,7 @@ class CostRbf(BaseCost):
         return self
 
     def error(self, start, end):
-        """Return the approximation cost on the segment [start:end].
+        u"""Return the approximation cost on the segment [start:end].
 
         Args:
             start (int): start of the segment

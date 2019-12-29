@@ -1,4 +1,5 @@
-"""Mean time error."""
+u"""Mean time error."""
+from __future__ import absolute_import
 import numpy as np
 from scipy.spatial.distance import cdist
 
@@ -6,7 +7,7 @@ from ruptures.metrics.sanity_check import sanity_check
 
 
 def meantime(true_bkps, my_bkps):
-    """For each computed changepoint, the mean time error is the average number
+    u"""For each computed changepoint, the mean time error is the average number
         of points to the closest true changepoint.
         Not a symetric funtion.
 

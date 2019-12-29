@@ -1,4 +1,4 @@
-r"""
+ur"""
 
 .. _sec-autoregressive:
 
@@ -98,6 +98,7 @@ Code explanation
     :keyprefix: ar-
 
 """
+from __future__ import absolute_import
 import numpy as np
 from numpy.lib.stride_tricks import as_strided
 from numpy.linalg import lstsq
@@ -108,11 +109,11 @@ from ruptures.costs import NotEnoughPoints
 
 class CostAR(BaseCost):
 
-    r"""
+    ur"""
     Least-squares estimate for changes in autoregressive coefficients.
     """
 
-    model = "ar"
+    model = u"ar"
 
     def __init__(self, order=4):
         self.signal = None
@@ -121,7 +122,7 @@ class CostAR(BaseCost):
         self.order = order
 
     def fit(self, signal):
-        """Set parameters of the instance.
+        u"""Set parameters of the instance.
         The signal must be 1D.
 
         Args:
@@ -143,7 +144,7 @@ class CostAR(BaseCost):
         # pad the first columns
         lagged_after_padding = np.pad(lagged,
                                       ((self.order, 0), (0, 0)),
-                                      mode="edge")
+                                      mode=u"edge")
         # add intercept
         self.covar = np.c_[lagged_after_padding, np.ones(n_samples)]
         # pad signal on the edges
@@ -151,7 +152,7 @@ class CostAR(BaseCost):
         return self
 
     def error(self, start, end):
-        """Return the approximation cost on the segment [start:end].
+        u"""Return the approximation cost on the segment [start:end].
 
         Args:
             start (int): start of the segment

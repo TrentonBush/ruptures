@@ -1,4 +1,4 @@
-r"""
+ur"""
 .. _sec-normal:
 
 Gaussian process change
@@ -62,6 +62,7 @@ Code explanation
     :special-members: __init__
 
 """
+from __future__ import absolute_import
 import numpy as np
 from numpy.linalg import slogdet
 
@@ -71,16 +72,16 @@ from ruptures.costs import NotEnoughPoints
 
 class CostNormal(BaseCost):
 
-    """Maximum Gaussian likelihood."""
+    u"""Maximum Gaussian likelihood."""
 
-    model = "normal"
+    model = u"normal"
 
     def __init__(self):
         self.signal = None
         self.min_size = 2
 
     def fit(self, signal):
-        """Set parameters of the instance.
+        u"""Set parameters of the instance.
 
         Args:
             signal (array): signal. Shape (n_samples,) or (n_samples, n_features)
@@ -96,7 +97,7 @@ class CostNormal(BaseCost):
         return self
 
     def error(self, start, end):
-        """Return the approximation cost on the segment [start:end].
+        u"""Return the approximation cost on the segment [start:end].
 
         Args:
             start (int): start of the segment

@@ -1,17 +1,20 @@
-"""Miscellaneous functions for ruptures."""
+u"""Miscellaneous functions for ruptures."""
 
+from __future__ import division
+from __future__ import absolute_import
 from itertools import tee
 from math import ceil
 from random import choice
 
 import numpy as np
+from itertools import izip
 
 
 def pairwise(iterable):
-    "s -> (s0,s1), (s1,s2), (s2, s3), ..."
+    u"s -> (s0,s1), (s1,s2), (s2, s3), ..."
     a, b = tee(iterable)
     next(b, None)
-    return zip(a, b)
+    return izip(a, b)
 
 
 # def draw_bkps(n_samples, n_bkps, min_size=None):
@@ -31,20 +34,20 @@ def pairwise(iterable):
 
 
 def unzip(seq):
-    """Reverse zip"""
-    return zip(*seq)
+    u"""Reverse zip"""
+    return izip(*seq)
 
 
 def admissible_filter(start, end, jump, min_size):
-    """A filter to know if an index can be considered as a change point."""
+    u"""A filter to know if an index can be considered as a change point."""
     def filtre(ind):
-        """Return True if index is admissible."""
+        u"""Return True if index is admissible."""
         return all((ind - start > min_size, end - ind > min_size, ind % jump == 0))
     return filtre
 
 
 def sanity_check(n_samples, n_bkps, jump, min_size):
-    """Check if a partition if possible given the parameters.
+    u"""Check if a partition if possible given the parameters.
 
     Args:
         n_samples (int): number of point in the signal

@@ -1,4 +1,4 @@
-r"""
+ur"""
 ====================================================================================================
 Search methods
 ====================================================================================================
@@ -42,6 +42,7 @@ The :mod:`ruptures.detection` module implements the change point detection metho
 # - Greedy detection:
 #     - Least squares, kernel error, autoregressive model :ref:`greedy-ar`, linear model.
 
+from __future__ import absolute_import
 from .binseg import Binseg
 from .bottomup import BottomUp
 from .dynp import Dynp

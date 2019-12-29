@@ -1,4 +1,4 @@
-r"""
+ur"""
 
 .. _sec-linear:
 
@@ -100,6 +100,7 @@ Code explanation
     :keyprefix: cl-
 
 """
+from __future__ import absolute_import
 from numpy.linalg import lstsq
 
 from ruptures.base import BaseCost
@@ -108,11 +109,11 @@ from ruptures.costs import NotEnoughPoints
 
 class CostLinear(BaseCost):
 
-    r"""
+    ur"""
     Least-squares estimate for linear changes.
     """
 
-    model = "linear"
+    model = u"linear"
 
     def __init__(self):
         self.signal = None
@@ -120,7 +121,7 @@ class CostLinear(BaseCost):
         self.min_size = 2
 
     def fit(self, signal):
-        """Set parameters of the instance.
+        u"""Set parameters of the instance.
         The first column contains the observed variable.
         The other columns contains the covariates.
 
@@ -130,14 +131,14 @@ class CostLinear(BaseCost):
         Returns:
             self
         """
-        assert signal.ndim > 1, "Not enough dimensions"
+        assert signal.ndim > 1, u"Not enough dimensions"
 
         self.signal = signal[:, 0].reshape(-1, 1)
         self.covar = signal[:, 1:]
         return self
 
     def error(self, start, end):
-        """Return the approximation cost on the segment [start:end].
+        u"""Return the approximation cost on the segment [start:end].
 
         Args:
             start (int): start of the segment

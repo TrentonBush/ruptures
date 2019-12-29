@@ -1,4 +1,4 @@
-"""
+u"""
 .. _greedy-ar:
 
 Autoregressive model
@@ -8,18 +8,20 @@ Greedy change point detection for piecewise autoregressive signals.
 Sequential algorithm.
 
 """
+from __future__ import absolute_import
 import numpy as np
 from numpy.lib.stride_tricks import as_strided
 from numpy.linalg import lstsq
 from ruptures.utils import pairwise
+from itertools import izip
 
 
-class GreedyAR:
+class GreedyAR(object):
 
-    """Greedy change point detection for piecewise autoregressive processes."""
+    u"""Greedy change point detection for piecewise autoregressive processes."""
 
     def __init__(self, order=2, jump=10):
-        """
+        u"""
 
         Args:
             order (int, optional): order of the autoregressive process. Defaults to 2.
@@ -36,7 +38,7 @@ class GreedyAR:
         self.dim = None
 
     def seg(self, n_bkps=None, pen=None, epsilon=None):
-        """Computes the greedy segmentation.
+        u"""Computes the greedy segmentation.
 
         The stopping rule depends on the parameter passed to the function.
 
@@ -65,14 +67,14 @@ class GreedyAR:
                 res_tmp = 0
                 y_left, y_right = residual[:ind], residual[ind:]
                 x_left, x_right = self.covariates[:ind], self.covariates[ind:]
-                for x, y in zip((x_left, x_right), (y_left, y_right)):
+                for x, y in izip((x_left, x_right), (y_left, y_right)):
                     # linear fit
                     _, res_sub, _, _ = lstsq(x, y)
                     # error on sub-signal
                     res_tmp += res_sub
                 res_list.append(res_tmp)
             # find best index
-            _, bkp_opt = min(zip(res_list, inds))
+            _, bkp_opt = min(izip(res_list, inds))
             # orthogonal projection
             proj = np.zeros(signal.shape)
             for start, end in pairwise(sorted([0, bkp_opt] + bkps)):
@@ -102,7 +104,7 @@ class GreedyAR:
         return bkps
 
     def fit(self, signal):
-        """Compute params to segment signal.
+        u"""Compute params to segment signal.
 
         Args:
             signal (array): univariate signal to segment. Shape (n_samples, 1) or (n_samples,).
@@ -116,7 +118,7 @@ class GreedyAR:
         else:
             self.signal = signal - signal.mean()
         self.n_samples, dim = self.signal.shape
-        assert dim == 1, "Signal must be 1D."
+        assert dim == 1, u"Signal must be 1D."
 
         # covariates are lagged sub-sequences
         shape = (self.n_samples - self.order, self.order)
@@ -131,7 +133,7 @@ class GreedyAR:
         return self
 
     def predict(self, n_bkps=None, pen=None, epsilon=None):
-        """Return the optimal breakpoints.
+        u"""Return the optimal breakpoints.
 
         Must be called after the fit method. The breakpoints are associated with the signal passed
         to fit().
@@ -145,7 +147,7 @@ class GreedyAR:
         Returns:
             list: sorted list of breakpoints
         """
-        msg = "Give a parameter."
+        msg = u"Give a parameter."
         assert any(param is not None for param in (n_bkps, pen, epsilon)), msg
 
         bkps = self.seg(n_bkps=n_bkps, pen=pen, epsilon=epsilon)
@@ -153,6 +155,6 @@ class GreedyAR:
         return [b + self.order for b in bkps]
 
     def fit_predict(self, signal, n_bkps=None, pen=None, epsilon=None):
-        """Helper method to call fit and predict once."""
+        u"""Helper method to call fit and predict once."""
         self.fit(signal)
         return self.predict(n_bkps=n_bkps, pen=pen, epsilon=epsilon)

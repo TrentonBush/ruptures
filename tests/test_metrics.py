@@ -1,3 +1,5 @@
+from __future__ import with_statement
+from __future__ import absolute_import
 import numpy as np
 import pytest
 
@@ -5,7 +7,7 @@ from ruptures.metrics import hausdorff, meantime, precision_recall, randindex
 from ruptures.metrics.sanity_check import BadPartitions
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope=u"module")
 def b_mb():
     return [100, 200, 350, 400, 500], [101, 201, 301, 401, 500]
 
@@ -34,7 +36,7 @@ def test_meantime(b_mb):
     assert m == 0
 
 
-@pytest.mark.parametrize("margin", range(1, 20, 2))
+@pytest.mark.parametrize(u"margin", xrange(1, 20, 2))
 def test_precision_recall(b_mb, margin):
     b, mb = b_mb
     p, r = precision_recall(b, mb, margin=margin)
@@ -45,7 +47,7 @@ def test_precision_recall(b_mb, margin):
     p, r = precision_recall(b, [b[-1]], margin=margin)
 
 
-@pytest.mark.parametrize("metric", [hausdorff, meantime, precision_recall, randindex])
+@pytest.mark.parametrize(u"metric", [hausdorff, meantime, precision_recall, randindex])
 def test_exception(b_mb, metric):
     true_bkps, my_bkps = b_mb
     with pytest.raises(BadPartitions):

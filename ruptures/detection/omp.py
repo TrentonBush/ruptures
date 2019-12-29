@@ -1,4 +1,4 @@
-"""
+u"""
 
 Orthogonal matching pursuit for changepoint detection.
 
@@ -7,6 +7,8 @@ Fast but approximate.
 Euclidean norm.
 
 """
+from __future__ import division
+from __future__ import absolute_import
 import numpy as np
 from numpy.linalg import norm
 
@@ -16,10 +18,10 @@ from ruptures.base import BaseEstimator
 
 class Omp(BaseEstimator):
 
-    """Contient l'algorithme de parcours des partitions."""
+    u"""Contient l'algorithme de parcours des partitions."""
 
     def __init__(self, min_size=2, jump=5):
-        """Initialize an Omp instance
+        u"""Initialize an Omp instance
 
         Args:
             min_size (int, optional): minimum segment length. Defaults to 2 samples.
@@ -34,7 +36,7 @@ class Omp(BaseEstimator):
         self.signal = None
 
     def _seg(self, n_bkps=None, pen=None, epsilon=None):
-        """Computes the binary segmentation.
+        u"""Computes the binary segmentation.
 
         The stopping rule depends on the parameter passed to the function.
 
@@ -86,7 +88,7 @@ class Omp(BaseEstimator):
         return bkps
 
     def fit(self, signal):
-        """Compute params to segment signal.
+        u"""Compute params to segment signal.
 
         Args:
             signal (array): signal to segment. Shape (n_samples, n_features) or (n_samples,).
@@ -105,7 +107,7 @@ class Omp(BaseEstimator):
         return self
 
     def predict(self, n_bkps=None, pen=None, epsilon=None):
-        """Return the optimal breakpoints.
+        u"""Return the optimal breakpoints.
 
         Must be called after the fit method. The breakpoints are associated with the signal passed
         to fit().
@@ -119,13 +121,13 @@ class Omp(BaseEstimator):
         Returns:
             list: sorted list of breakpoints
         """
-        msg = "Give a parameter."
+        msg = u"Give a parameter."
         assert any(param is not None for param in (n_bkps, pen, epsilon)), msg
 
         bkps = self._seg(n_bkps=n_bkps, pen=pen, epsilon=epsilon)
         return bkps
 
     def fit_predict(self, signal, n_bkps=None, pen=None, epsilon=None):
-        """Helper method to call fit and predict once."""
+        u"""Helper method to call fit and predict once."""
         self.fit(signal)
         return self.predict(n_bkps=n_bkps, pen=pen, epsilon=epsilon)

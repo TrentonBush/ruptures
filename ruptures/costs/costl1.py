@@ -1,4 +1,4 @@
-r"""
+ur"""
 .. _sec-costl1:
 
 Least absolute deviation
@@ -72,6 +72,7 @@ Code explanation
     :keyprefix: c1-
 
 """
+from __future__ import absolute_import
 import numpy as np
 
 from ruptures.base import BaseCost
@@ -80,18 +81,18 @@ from ruptures.costs import NotEnoughPoints
 
 class CostL1(BaseCost):
 
-    r"""
+    ur"""
     Least absolute deviation.
     """
 
-    model = "l1"
+    model = u"l1"
 
     def __init__(self):
         self.signal = None
         self.min_size = 2
 
     def fit(self, signal):
-        """Set parameters of the instance.
+        u"""Set parameters of the instance.
 
         Args:
             signal (array): signal. Shape (n_samples,) or (n_samples, n_features)
@@ -107,7 +108,7 @@ class CostL1(BaseCost):
         return self
 
     def error(self, start, end):
-        """Return the approximation cost on the segment [start:end].
+        u"""Return the approximation cost on the segment [start:end].
 
         Args:
             start (int): start of the segment

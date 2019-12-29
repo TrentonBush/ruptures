@@ -1,8 +1,10 @@
+from __future__ import division
+from __future__ import absolute_import
 from math import ceil
 
 
 def sanity_check(n_samples, n_bkps, jump, min_size):
-    """Check if a partition if possible given the parameters.
+    u"""Check if a partition if possible given the parameters.
 
     Args:
         n_samples (int): number of point in the signal

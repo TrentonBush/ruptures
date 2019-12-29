@@ -1,5 +1,7 @@
-"""Hamming metric for segmentation."""
+u"""Hamming metric for segmentation."""
 
+from __future__ import division
+from __future__ import absolute_import
 import numpy as np
 from scipy.sparse import block_diag, triu
 
@@ -8,7 +10,7 @@ from ruptures.utils import pairwise
 
 
 def membership_mat(bkps):
-    """Return membership matrix for the given segmentation."""
+    u"""Return membership matrix for the given segmentation."""
     n_samples = bkps[-1]
     m_mat = np.zeros((n_samples, n_samples))
     for start, end in pairwise([0] + bkps):
@@ -17,7 +19,7 @@ def membership_mat(bkps):
 
 
 def hamming(bkps1, bkps2):
-    """Modified Hamming distance for partitions.
+    u"""Modified Hamming distance for partitions.
     For all pair of points (x, y), x != y, the functions computes the
     number of times the two partitions disagree.
     The result is scaled to be within 0 and 1.

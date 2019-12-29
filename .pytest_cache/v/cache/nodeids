@@ -1,0 +1,5 @@
+[
+  "tests/test_display.py::test_display_with_options", 
+  "tests/test_display.py::test_display_without_options", 
+  "tests/test_display.py::test_display_with_new_options"
+]
