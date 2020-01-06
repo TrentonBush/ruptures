@@ -62,8 +62,8 @@ try:
     import matplotlib
     import os
     # must be before importing matplotlib.pyplot or pylab!
-    if os.name == 'posix' and ("DISPLAY" not in os.environ or os.environ['DISPLAY'] == ':0.0'):
-        matplotlib.use('Agg')
+#    if os.name == 'posix' and ("DISPLAY" not in os.environ or os.environ['DISPLAY'] == ':0.0'):
+#        matplotlib.use('Agg')
 
     # now import other things from matplotlib
     import matplotlib.pyplot as plt
