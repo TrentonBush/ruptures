@@ -44,6 +44,7 @@ The :mod:`ruptures.detection` module implements the change point detection metho
 
 from __future__ import absolute_import
 from .binseg import Binseg
+from .binseghist import BinsegHistory
 from .bottomup import BottomUp
 from .dynp import Dynp
 from .omp import Omp
