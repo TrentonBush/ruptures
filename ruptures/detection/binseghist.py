@@ -135,14 +135,14 @@ class BinsegHistory(BaseEstimator):
         self.single_bkp = lru_cache(maxsize=None)(self._single_bkp)
         self.bkp_hist = [[], []]
 
-    def _seg(self, n_bkps=None, pen=None, epsilon=None, n_tail=2):
+    def _seg(self, n_bkps=None, pen=None, epsilon=None, n_tail=0):
         u"""Computes the binary segmentation.
 
         The stopping rule depends on the parameter passed to the function.
 
         Args:
             n_bkps (int): number of breakpoints to find before stopping.
-            penalty (float): penalty value (>0)
+            pen (float): penalty value (>0)
             epsilon (float): reconstruction budget (>0)
             n_tail (int): number of breakpoints to log after penalty fails
 
@@ -235,7 +235,7 @@ class BinsegHistory(BaseEstimator):
 
         return self
 
-    def predict(self, n_bkps=None, pen=None, epsilon=None):
+    def predict(self, n_bkps=None, pen=None, epsilon=None, n_tail=0):
         u"""Return the optimal breakpoints.
 
         Must be called after the fit method. The breakpoints are associated with the signal passed
@@ -244,7 +244,7 @@ class BinsegHistory(BaseEstimator):
 
         Args:
             n_bkps (int): number of breakpoints to find before stopping.
-            penalty (float): penalty value (>0)
+            pen (float): penalty value (>0)
             epsilon (float): reconstruction budget (>0)
 
         Returns:
@@ -253,7 +253,7 @@ class BinsegHistory(BaseEstimator):
         msg = u"Give a parameter."
         assert any(param is not None for param in (n_bkps, pen, epsilon)), msg
 
-        partition = self._seg(n_bkps=n_bkps, pen=pen, epsilon=epsilon)
+        partition = self._seg(n_bkps=n_bkps, pen=pen, epsilon=epsilon, n_tail=n_tail)
         bkps = sorted(e for s, e in partition.keys())
         return bkps
 
@@ -265,7 +265,7 @@ class BinsegHistory(BaseEstimator):
         Args:
             signal (array): signal. Shape (n_samples, n_features) or (n_samples,).
             n_bkps (int): number of breakpoints.
-            penalty (float): penalty value (>0)
+            pen (float): penalty value (>0)
             epsilon (float): reconstruction budget (>0)
 
         Returns:
