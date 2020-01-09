@@ -186,15 +186,16 @@ class BinsegHistory(BaseEstimator):
             self.bkp_hist[0].append(bkp)
             self.bkp_hist[1].append(gain)
 
-            if counter_orig > 0:
+            if not stop or counter_orig > 0:
+                bkps.append(bkp)
+                bkps.sort()
+
+            if counter - stop == 0: # remove low gain bkps from final output
                 high_gain_idx = [idx for idx, gain in enumerate(self.bkp_hist[1]) if gain > pen]
                 if high_gain_idx:
                     last_idx = max(high_gain_idx)
                     bkps = self.bkp_hist[0][:last_idx + 1] + [self.n_samples]
                     bkps.sort()
-            elif not stop:
-                bkps.append(bkp)
-                bkps.sort()
         partition = dict(((start, end), self.cost.error(start, end))
                      for start, end in pairwise([0] + bkps))
         return partition
